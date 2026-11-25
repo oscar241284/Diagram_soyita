@@ -4,47 +4,79 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PDF a Diagrama de Flujo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header>
-  <h1>PDF → Diagrama de flujo</h1>
-  <p class="sub">Carga un procedimiento en PDF, revisa los pasos y genera un diagrama animado.</p>
+<div class="bg-glow" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo-dot"></span>
+    <div>
+      <h1>PDF → Diagrama de flujo</h1>
+      <p class="sub">Carga un procedimiento, revisa los pasos y genera un diagrama animado.</p>
+    </div>
+  </div>
 </header>
 
 <main class="layout">
-  <section class="panel">
-    <h2>1. Cargar PDF</h2>
-    <input type="file" id="pdfInput" accept="application/pdf">
-    <p class="hint">El texto se extrae en tu navegador. Los PDFs escaneados necesitan OCR (no incluido aún).</p>
+  <section class="card">
+    <div class="step">
+      <span class="step-num">1</span>
+      <h2>Cargar PDF</h2>
+    </div>
+    <label class="dropzone" id="dropzone">
+      <input type="file" id="pdfInput" accept="application/pdf">
+      <span class="dz-icon">📄</span>
+      <span class="dz-title">Elige un PDF</span>
+      <span class="dz-hint">El texto se extrae en tu navegador. Los escaneados necesitan OCR (pendiente).</span>
+    </label>
 
-    <h2>2. Revisar pasos (JSON)</h2>
-    <p class="hint">Aquí aparece la estructura de pasos. Puedes editarla antes de dibujar.</p>
-    <textarea id="jsonInput" spellcheck="false"></textarea>
-    <div class="row">
-      <button id="btnAnalyze" disabled title="Requiere configurar analyzeUrl en config.js">✨ Analizar PDF con IA</button>
-      <button id="btnSample">Cargar ejemplo</button>
+    <div class="step">
+      <span class="step-num">2</span>
+      <h2>Revisar pasos</h2>
+    </div>
+    <p class="hint">Edita la estructura en JSON antes de dibujar.</p>
+    <textarea id="jsonInput" spellcheck="false" aria-label="Pasos en JSON"></textarea>
+    <div class="actions">
+      <button id="btnAnalyze" class="ghost" disabled title="Requiere configurar analyzeUrl en config.js">✨ Analizar con IA</button>
+      <button id="btnSample" class="ghost">Cargar ejemplo</button>
       <button id="btnDraw" class="primary">Dibujar diagrama</button>
     </div>
 
-    <h2>3. Logos (opcional)</h2>
-    <p class="hint">Sube imágenes con el nombre del actor (ej. <code>SAP.png</code>). Si el nombre coincide, aparece el logo en su carril.</p>
-    <input type="file" id="logoInput" accept="image/*" multiple>
+    <div class="step">
+      <span class="step-num">3</span>
+      <h2>Logos <small>(opcional)</small></h2>
+    </div>
+    <p class="hint">Sube imágenes con el nombre del actor, por ejemplo <code>SAP.png</code>.</p>
+    <input type="file" id="logoInput" accept="image/*" multiple class="file-plain">
 
-    <h2>Texto extraído</h2>
-    <textarea id="pdfText" spellcheck="false" readonly></textarea>
+    <details class="extracted">
+      <summary>Texto extraído del PDF</summary>
+      <textarea id="pdfText" spellcheck="false" readonly></textarea>
+    </details>
   </section>
 
-  <section class="panel canvas-panel">
-    <div class="row between">
-      <h2 id="diagTitle">Diagrama</h2>
-      <div class="row">
-        <button id="btnPause">⏸ Pausar</button>
-        <button id="btnSvg">Descargar SVG</button>
+  <section class="card canvas-card">
+    <div class="canvas-head">
+      <div>
+        <p class="eyebrow">Vista previa</p>
+        <h2 id="diagTitle">Diagrama</h2>
+      </div>
+      <div class="actions">
+        <button id="btnPause" class="ghost">⏸ Pausar</button>
+        <button id="btnSvg" class="ghost">Descargar SVG</button>
       </div>
     </div>
-    <div id="diagram" class="diagram"><p class="hint">Carga un PDF o usa el ejemplo y pulsa "Dibujar diagrama".</p></div>
-    <p id="status" class="hint"></p>
+    <div id="diagram" class="diagram">
+      <div class="empty">
+        <p>Carga un PDF o usa el ejemplo y pulsa <strong>Dibujar diagrama</strong>.</p>
+      </div>
+    </div>
+    <p id="status" class="hint status"></p>
   </section>
 </main>
 
