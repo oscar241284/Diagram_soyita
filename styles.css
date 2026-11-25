@@ -153,6 +153,13 @@ details.block textarea { margin-top: 10px; }
 .pdf-ok { margin: 10px 0 0; font-size: 13px; font-weight: 500; color: var(--ok); }
 .pdf-ok.error { color: #f87171; }
 #textBlock textarea.code { min-height: 180px; }
+.pdf-preview { display: flex; flex-direction: column; gap: 12px; }
+.pdf-page {
+  width: 100%; height: auto; display: block;
+  background: #fff; border-radius: 8px;
+  border: 1px solid var(--line-2);
+  box-shadow: 0 8px 20px -10px rgba(0,0,0,.6);
+}
 
 /* Campos */
 textarea.code {

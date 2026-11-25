@@ -56,6 +56,33 @@ async function extractPdfText(file) {
   return out.trim();
 }
 
+// Dibuja las primeras páginas del PDF como imágenes pequeñas
+async function renderPdfPreview(file) {
+  const data = new Uint8Array(await file.arrayBuffer());
+  const pdf = await pdfjsLib.getDocument({ data }).promise;
+  const box = $("pdfPreview");
+  box.innerHTML = "";
+  const max = Math.min(pdf.numPages, 4);
+  for (let p = 1; p <= max; p++) {
+    const page = await pdf.getPage(p);
+    const vp = page.getViewport({ scale: 0.5 });
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.ceil(vp.width);
+    canvas.height = Math.ceil(vp.height);
+    canvas.className = "pdf-page";
+    canvas.setAttribute("aria-label", `Página ${p} de ${pdf.numPages}`);
+    box.appendChild(canvas);
+    await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+  }
+  const note = document.createElement("p");
+  note.className = "hint";
+  note.textContent = pdf.numPages > max
+    ? `Mostrando ${max} de ${pdf.numPages} páginas.`
+    : `${pdf.numPages} ${pdf.numPages === 1 ? "página" : "páginas"}.`;
+  box.appendChild(note);
+  $("previewBlock").hidden = false;
+}
+
 $("pdfInput").addEventListener("change", async (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -64,6 +91,7 @@ $("pdfInput").addEventListener("change", async (e) => {
     const text = await extractPdfText(file);
     $("pdfText").value = text;
     $("textBlock").hidden = false;
+    renderPdfPreview(file).catch((err) => setStatus("No se pudo mostrar la vista previa: " + err.message, true));
     $("pdfOk").hidden = false;
     $("pdfOk").className = "pdf-ok";
     $("pdfOk").textContent = `PDF cargado: ${file.name} · ${text.length} caracteres`;
