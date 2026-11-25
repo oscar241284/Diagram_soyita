@@ -1,0 +1,35 @@
+:root {
+  --bg: #0f172a; --card: #1e293b; --line: #334155; --txt: #e2e8f0;
+  --muted: #94a3b8; --acc: #38bdf8; --ok: #34d399; --warn: #f59e0b;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: var(--bg); color: var(--txt); }
+header { padding: 18px 22px 4px; }
+h1 { margin: 0; font-size: 22px; }
+h2 { font-size: 15px; margin: 14px 0 6px; color: var(--acc); }
+.sub, .hint { color: var(--muted); font-size: 13px; margin: 4px 0; }
+code { background: #0b1222; padding: 1px 5px; border-radius: 4px; }
+.layout { display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: 14px; padding: 12px 22px 22px; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; min-width: 0; }
+textarea { width: 100%; min-height: 150px; background: #0b1222; color: var(--txt); border: 1px solid var(--line); border-radius: 8px; padding: 8px; font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+#pdfText { min-height: 100px; }
+button { background: #0b1222; color: var(--txt); border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px; cursor: pointer; font-size: 14px; }
+button:hover { border-color: var(--acc); }
+button.primary { background: var(--acc); color: #04121c; border-color: var(--acc); font-weight: 600; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; align-items: center; }
+.row.between { justify-content: space-between; }
+input[type=file] { color: var(--muted); font-size: 13px; }
+.diagram { overflow: auto; background: #0b1222; border-radius: 10px; min-height: 420px; }
+.diagram svg { display: block; }
+.lane-bg { fill: #111c33; stroke: var(--line); }
+.lane-label { fill: var(--muted); font-size: 13px; font-weight: 600; }
+.node-task rect { fill: #0b1222; stroke: var(--acc); stroke-width: 1.6; rx: 10; }
+.node-decision polygon { fill: #0b1222; stroke: var(--warn); stroke-width: 1.6; }
+.node-start rect, .node-end rect { fill: #0b1222; stroke: var(--ok); stroke-width: 2; rx: 22; }
+.node-text { fill: var(--txt); font-size: 12px; text-anchor: middle; }
+.edge { fill: none; stroke: #475569; stroke-width: 2; stroke-dasharray: 7 7; animation: flow 1s linear infinite; }
+.edge-label { fill: var(--muted); font-size: 11px; }
+.dot { fill: var(--acc); }
+@keyframes flow { to { stroke-dashoffset: -14; } }
+.paused .edge { animation-play-state: paused; }

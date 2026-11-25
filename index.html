@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF a Diagrama de Flujo</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>PDF → Diagrama de flujo</h1>
+  <p class="sub">Carga un procedimiento en PDF, revisa los pasos y genera un diagrama animado.</p>
+</header>
+
+<main class="layout">
+  <section class="panel">
+    <h2>1. Cargar PDF</h2>
+    <input type="file" id="pdfInput" accept="application/pdf">
+    <p class="hint">El texto se extrae en tu navegador. Los PDFs escaneados necesitan OCR (no incluido aún).</p>
+
+    <h2>2. Revisar pasos (JSON)</h2>
+    <p class="hint">Aquí aparece la estructura de pasos. Puedes editarla antes de dibujar.</p>
+    <textarea id="jsonInput" spellcheck="false"></textarea>
+    <div class="row">
+      <button id="btnAnalyze" disabled title="Requiere configurar analyzeUrl en config.js">✨ Analizar PDF con IA</button>
+      <button id="btnSample">Cargar ejemplo</button>
+      <button id="btnDraw" class="primary">Dibujar diagrama</button>
+    </div>
+
+    <h2>3. Logos (opcional)</h2>
+    <p class="hint">Sube imágenes con el nombre del actor (ej. <code>SAP.png</code>). Si el nombre coincide, aparece el logo en su carril.</p>
+    <input type="file" id="logoInput" accept="image/*" multiple>
+
+    <h2>Texto extraído</h2>
+    <textarea id="pdfText" spellcheck="false" readonly></textarea>
+  </section>
+
+  <section class="panel canvas-panel">
+    <div class="row between">
+      <h2 id="diagTitle">Diagrama</h2>
+      <div class="row">
+        <button id="btnPause">⏸ Pausar</button>
+        <button id="btnSvg">Descargar SVG</button>
+      </div>
+    </div>
+    <div id="diagram" class="diagram"><p class="hint">Carga un PDF o usa el ejemplo y pulsa "Dibujar diagrama".</p></div>
+    <p id="status" class="hint"></p>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
