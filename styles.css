@@ -150,6 +150,10 @@ details.block textarea { margin-top: 10px; }
   color: #c9d6ff; background: var(--acc-soft); border: 1px solid rgba(91,140,255,.25);
 }
 
+.pdf-ok { margin: 10px 0 0; font-size: 13px; font-weight: 500; color: var(--ok); }
+.pdf-ok.error { color: #f87171; }
+#textBlock textarea.code { min-height: 180px; }
+
 /* Campos */
 textarea.code {
   width: 100%; min-height: 200px; resize: vertical;

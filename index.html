@@ -46,6 +46,12 @@
         <span class="dz-title">Selecciona un PDF</span>
         <span class="dz-hint">Se lee en tu navegador. Los escaneados requieren OCR.</span>
       </label>
+      <p id="pdfOk" class="pdf-ok" hidden></p>
+    </section>
+
+    <section class="block" id="textBlock" hidden>
+      <h2 class="block-title">Texto del PDF</h2>
+      <textarea id="pdfText" class="code" spellcheck="false" readonly aria-label="Texto extraído del PDF"></textarea>
     </section>
 
     <section class="block">
@@ -66,10 +72,6 @@
       <input type="file" id="logoInput" accept="image/*" multiple class="file-plain">
     </section>
 
-    <details class="block extracted">
-      <summary class="block-title">Texto extraído</summary>
-      <textarea id="pdfText" class="code" spellcheck="false" readonly></textarea>
-    </details>
   </aside>
 
   <section class="canvas-card">

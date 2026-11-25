@@ -63,10 +63,17 @@ $("pdfInput").addEventListener("change", async (e) => {
   try {
     const text = await extractPdfText(file);
     $("pdfText").value = text;
+    $("textBlock").hidden = false;
+    $("pdfOk").hidden = false;
+    $("pdfOk").className = "pdf-ok";
+    $("pdfOk").textContent = `PDF cargado: ${file.name} · ${text.length} caracteres`;
     setStep(2);
     setStatus(text ? `Texto extraído (${text.length} caracteres).` : "El PDF no tiene texto seleccionable (¿es escaneado?).", !text);
     $("btnAnalyze").disabled = !CONFIG.analyzeUrl || !text;
   } catch (err) {
+    $("pdfOk").hidden = false;
+    $("pdfOk").className = "pdf-ok error";
+    $("pdfOk").textContent = "No se pudo leer el PDF: " + err.message;
     setStatus("Error al leer el PDF: " + err.message, true);
   }
 });
