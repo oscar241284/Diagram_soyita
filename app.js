@@ -232,6 +232,14 @@ $("btnDraw").addEventListener("click", () => {
   setStatus(`Diagrama con ${model.steps.length} pasos.`);
 });
 
+// Atajo: Ctrl/Cmd + Enter dibuja desde el cuadro de pasos
+$("jsonInput").addEventListener("keydown", (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+    e.preventDefault();
+    $("btnDraw").click();
+  }
+});
+
 $("btnPause").addEventListener("click", () => {
   const svg = $("diagram").querySelector("svg");
   if (!svg) return;
