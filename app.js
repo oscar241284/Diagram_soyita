@@ -20,7 +20,7 @@ function esc(s) {
 function setStatus(msg, isError = false) {
   const el = $("status");
   el.textContent = msg;
-  el.style.color = isError ? "#f87171" : "";
+  el.className = "status" + (isError ? " error" : " ok");
 }
 
 // ---------- 1. Extraer texto del PDF ----------
@@ -216,7 +216,7 @@ ${nodeMarkup}
   $("diagram").innerHTML = svg;
   $("diagram").dataset.ready = "1";
   paused = false;
-  $("btnPause").textContent = "⏸ Pausar";
+  $("btnPause").textContent = "Pausar";
 }
 
 $("btnDraw").addEventListener("click", () => {
@@ -238,7 +238,7 @@ $("btnPause").addEventListener("click", () => {
   paused = !paused;
   paused ? svg.pauseAnimations() : svg.unpauseAnimations();
   $("diagram").classList.toggle("paused", paused);
-  $("btnPause").textContent = paused ? "▶ Reanudar" : "⏸ Pausar";
+  $("btnPause").textContent = paused ? "Reanudar" : "Pausar";
 });
 
 $("btnSvg").addEventListener("click", () => {

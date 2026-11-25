@@ -3,80 +3,99 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PDF a Diagrama de Flujo</title>
+<title>Diagram Soyita · PDF a diagrama de flujo</title>
+<meta name="description" content="Convierte procedimientos en PDF en diagramas de flujo animados.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="bg-glow" aria-hidden="true"></div>
 
-<header class="topbar">
+<header class="appbar">
   <div class="brand">
-    <span class="logo-dot"></span>
+    <div class="mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="18" height="18"><path d="M5 4h6v6H5zM13 14h6v6h-6zM11 7h2m-2 0l6 0m0 0v7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
     <div>
-      <h1>PDF → Diagrama de flujo</h1>
-      <p class="sub">Carga un procedimiento, revisa los pasos y genera un diagrama animado.</p>
+      <div class="name">Diagram Soyita</div>
+      <div class="tag">PDF → diagrama de flujo</div>
     </div>
   </div>
+  <nav class="appbar-actions">
+    <button id="btnSample" class="btn btn-ghost">Cargar ejemplo</button>
+    <button id="btnSvg" class="btn btn-ghost">Descargar SVG</button>
+  </nav>
 </header>
 
-<main class="layout">
-  <section class="card">
-    <div class="step">
-      <span class="step-num">1</span>
-      <h2>Cargar PDF</h2>
-    </div>
-    <label class="dropzone" id="dropzone">
-      <input type="file" id="pdfInput" accept="application/pdf">
-      <span class="dz-icon">📄</span>
-      <span class="dz-title">Elige un PDF</span>
-      <span class="dz-hint">El texto se extrae en tu navegador. Los escaneados necesitan OCR (pendiente).</span>
-    </label>
+<ol class="stepper" aria-label="Pasos">
+  <li class="s"><span class="n">1</span><span class="l">Cargar PDF</span></li>
+  <li class="s"><span class="n">2</span><span class="l">Revisar pasos</span></li>
+  <li class="s"><span class="n">3</span><span class="l">Dibujar</span></li>
+</ol>
 
-    <div class="step">
-      <span class="step-num">2</span>
-      <h2>Revisar pasos</h2>
-    </div>
-    <p class="hint">Edita la estructura en JSON antes de dibujar.</p>
-    <textarea id="jsonInput" spellcheck="false" aria-label="Pasos en JSON"></textarea>
-    <div class="actions">
-      <button id="btnAnalyze" class="ghost" disabled title="Requiere configurar analyzeUrl en config.js">✨ Analizar con IA</button>
-      <button id="btnSample" class="ghost">Cargar ejemplo</button>
-      <button id="btnDraw" class="primary">Dibujar diagrama</button>
-    </div>
+<main class="workspace">
+  <aside class="sidebar">
+    <section class="block">
+      <h2 class="block-title">Documento</h2>
+      <label class="dropzone" id="dropzone">
+        <input type="file" id="pdfInput" accept="application/pdf">
+        <span class="dz-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 18v-6m0 0-2.5 2.5M12 12l2.5 2.5"/></svg>
+        </span>
+        <span class="dz-title">Selecciona un PDF</span>
+        <span class="dz-hint">Se lee en tu navegador. Los escaneados requieren OCR.</span>
+      </label>
+    </section>
 
-    <div class="step">
-      <span class="step-num">3</span>
-      <h2>Logos <small>(opcional)</small></h2>
-    </div>
-    <p class="hint">Sube imágenes con el nombre del actor, por ejemplo <code>SAP.png</code>.</p>
-    <input type="file" id="logoInput" accept="image/*" multiple class="file-plain">
+    <section class="block">
+      <div class="block-head">
+        <h2 class="block-title">Pasos</h2>
+        <span class="muted">JSON</span>
+      </div>
+      <textarea id="jsonInput" class="code" spellcheck="false" aria-label="Pasos en JSON"></textarea>
+      <div class="row">
+        <button id="btnDraw" class="btn btn-primary">Dibujar diagrama</button>
+        <button id="btnAnalyze" class="btn btn-ghost" disabled title="Requiere configurar analyzeUrl en config.js">Analizar con IA</button>
+      </div>
+    </section>
 
-    <details class="extracted">
-      <summary>Texto extraído del PDF</summary>
-      <textarea id="pdfText" spellcheck="false" readonly></textarea>
+    <section class="block">
+      <h2 class="block-title">Logos <span class="muted">opcional</span></h2>
+      <p class="muted small">Nombra el archivo como el actor, por ejemplo <code>SAP.png</code>.</p>
+      <input type="file" id="logoInput" accept="image/*" multiple class="file-plain">
+    </section>
+
+    <details class="block extracted">
+      <summary class="block-title">Texto extraído</summary>
+      <textarea id="pdfText" class="code" spellcheck="false" readonly></textarea>
     </details>
-  </section>
+  </aside>
 
-  <section class="card canvas-card">
+  <section class="canvas-card">
     <div class="canvas-head">
       <div>
-        <p class="eyebrow">Vista previa</p>
-        <h2 id="diagTitle">Diagrama</h2>
+        <p class="eyebrow">Diagrama</p>
+        <h2 id="diagTitle" class="title">Sin diagrama</h2>
       </div>
-      <div class="actions">
-        <button id="btnPause" class="ghost">⏸ Pausar</button>
-        <button id="btnSvg" class="ghost">Descargar SVG</button>
+      <div class="row">
+        <button id="btnPause" class="btn btn-ghost">Pausar</button>
       </div>
     </div>
+
     <div id="diagram" class="diagram">
       <div class="empty">
-        <p>Carga un PDF o usa el ejemplo y pulsa <strong>Dibujar diagrama</strong>.</p>
+        <div class="empty-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="6" width="14" height="10" rx="3"/><rect x="30" y="32" width="14" height="10" rx="3"/><rect x="30" y="6" width="14" height="10" rx="3"/><path d="M18 11h12M24 16v8m0 0h-8v8m8-8h8v8" stroke-linecap="round"/></svg>
+        </div>
+        <p class="empty-title">Aún no hay diagrama</p>
+        <p class="muted">Selecciona un PDF o carga el ejemplo, y pulsa <strong>Dibujar diagrama</strong>.</p>
       </div>
     </div>
-    <p id="status" class="hint status"></p>
+
+    <div class="footer-row">
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </div>
   </section>
 </main>
 
