@@ -62,8 +62,8 @@ $("btnAnalyze").addEventListener("click", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text: $("pdfText").value }),
     });
-    if (!res.ok) throw new Error("HTTP " + res.status);
     const json = await res.json();
+    if (!res.ok) throw new Error(json.error || "HTTP " + res.status);
     $("jsonInput").value = JSON.stringify(json, null, 2);
     setStatus("Pasos generados. Revísalos y pulsa \"Dibujar diagrama\".");
   } catch (err) {

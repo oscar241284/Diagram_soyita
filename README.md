@@ -24,8 +24,14 @@ Abre `index.html` en el navegador (no requiere instalación).
 ```
 Tipos: `start`, `task`, `decision`, `end`.
 
-## Análisis con IA (opcional)
-Edita `config.js` y pon en `analyzeUrl` un endpoint propio que reciba `{ "text": "..." }` y devuelva el JSON con el formato anterior. La clave de API va en el backend (variables de entorno), nunca en el repositorio.
+## Análisis con IA
+`api/analyze.js` es una función serverless (Vercel) que recibe `{ "text": "..." }`, llama al modelo y devuelve el JSON validado con `lib/steps.js`.
+
+Configuración en Vercel:
+- Variable `ANTHROPIC_API_KEY` (obligatoria). Nunca la subas al repositorio.
+- Variable `ANTHROPIC_MODEL` (opcional, por defecto `claude-sonnet-5-5`).
+
+Pruebas de la lógica de pasos: `npm test`.
 
 ## Limitaciones
 - Solo PDFs con texto. Los escaneados requieren OCR (pendiente).

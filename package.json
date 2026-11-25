@@ -1,0 +1,10 @@
+{
+  "name": "diagram-soyita",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Convierte procedimientos en PDF en diagramas de flujo animados",
+  "scripts": {
+    "test": "node --test test/steps.test.js"
+  }
+}
