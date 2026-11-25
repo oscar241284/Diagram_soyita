@@ -270,10 +270,38 @@ $("btnPause").addEventListener("click", () => {
   $("btnPause").textContent = paused ? "Reanudar" : "Pausar";
 });
 
+// Exporta el SVG con sus estilos incluidos, para que se vea igual fuera de la página
+const EXPORT_CSS = `
+.lane-bg { fill: rgba(255,255,255,.015); stroke: #2a3850; }
+.lane-label { fill: #8a94a8; font-size: 12.5px; font-weight: 600; font-family: Inter, system-ui, sans-serif; }
+.node-task rect { fill: #111827; stroke: #5b8cff; stroke-width: 1.2; rx: 10; }
+.node-decision polygon { fill: #111827; stroke: #f5b84b; stroke-width: 1.2; }
+.node-start rect, .node-end rect { fill: #111827; stroke: #34d399; stroke-width: 1.5; rx: 20; }
+.node-text { fill: #e5e9f2; font-size: 12px; font-weight: 500; text-anchor: middle; font-family: Inter, system-ui, sans-serif; }
+.edge { fill: none; stroke: #4b5870; stroke-width: 1.6; stroke-dasharray: 6 6; animation: flow 1s linear infinite; }
+.edge-label { fill: #8a94a8; font-size: 11px; font-family: Inter, system-ui, sans-serif; }
+.dot { fill: #5b8cff; }
+@keyframes flow { to { stroke-dashoffset: -12; } }
+`;
+
+function exportSvgString(svgEl) {
+  const clone = svgEl.cloneNode(true);
+  clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  const style = document.createElementNS("http://www.w3.org/2000/svg", "style");
+  style.textContent = EXPORT_CSS;
+  clone.insertBefore(style, clone.firstChild);
+  const bg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  bg.setAttribute("width", "100%");
+  bg.setAttribute("height", "100%");
+  bg.setAttribute("fill", "#0b0f1a");
+  clone.insertBefore(bg, style.nextSibling);
+  return new XMLSerializer().serializeToString(clone);
+}
+
 $("btnSvg").addEventListener("click", () => {
   const svg = $("diagram").querySelector("svg");
   if (!svg) return setStatus("Primero dibuja un diagrama.", true);
-  const blob = new Blob([new XMLSerializer().serializeToString(svg)], { type: "image/svg+xml" });
+  const blob = new Blob([exportSvgString(svg)], { type: "image/svg+xml" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = ($("diagTitle").textContent || "diagrama") + ".svg";
