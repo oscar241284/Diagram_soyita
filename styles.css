@@ -65,6 +65,10 @@ code, .code { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Conso
   width: 22px; height: 22px; border-radius: 50%;
   border: 1px solid var(--line-2); font-size: 11px; font-weight: 600;
 }
+.stepper .s.active { color: var(--txt); }
+.stepper .s.active .n { border-color: var(--acc); background: var(--acc); color: #06112b; font-weight: 700; }
+.stepper .s.done { color: var(--txt); }
+.stepper .s.done .n { border-color: var(--ok); background: var(--ok); color: #04261a; }
 .stepper .s + .s::before {
   content: ""; width: 28px; height: 1px; background: var(--line-2); margin-right: 16px;
 }
@@ -131,6 +135,20 @@ details.block textarea { margin-top: 10px; }
 .dz-title { font-weight: 600; }
 .dz-hint { color: var(--muted); font-size: 12.5px; }
 .file-plain { color: var(--muted); font-size: 13px; }
+
+/* Barras de desplazamiento discretas en paneles */
+.sidebar { scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+.sidebar::-webkit-scrollbar { width: 8px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 8px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+
+/* Datos del diagrama */
+.stats { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.chip {
+  font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums;
+  padding: 3px 9px; border-radius: 999px;
+  color: #c9d6ff; background: var(--acc-soft); border: 1px solid rgba(91,140,255,.25);
+}
 
 /* Campos */
 textarea.code {

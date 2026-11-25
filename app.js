@@ -17,6 +17,24 @@ function esc(s) {
   return String(s ?? "").replace(/[&<>"']/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
+function setStep(n) {
+  [1, 2, 3].forEach((i) => {
+    const el = $("step" + i);
+    if (!el) return;
+    el.classList.toggle("done", i < n);
+    el.classList.toggle("active", i === n);
+  });
+}
+
+function renderStats(model) {
+  const decisions = model.steps.filter((s) => s.type === "decision").length;
+  $("stats").innerHTML = [
+    `<span class="chip">${model.steps.length} pasos</span>`,
+    `<span class="chip">${model.actors.length} actores</span>`,
+    `<span class="chip">${decisions} decisiones</span>`,
+  ].join("");
+}
+
 function setStatus(msg, isError = false) {
   const el = $("status");
   el.textContent = msg;
@@ -45,6 +63,7 @@ $("pdfInput").addEventListener("change", async (e) => {
   try {
     const text = await extractPdfText(file);
     $("pdfText").value = text;
+    setStep(2);
     setStatus(text ? `Texto extraído (${text.length} caracteres).` : "El PDF no tiene texto seleccionable (¿es escaneado?).", !text);
     $("btnAnalyze").disabled = !CONFIG.analyzeUrl || !text;
   } catch (err) {
@@ -213,6 +232,7 @@ ${nodeMarkup}
 </svg>`;
 
   $("diagTitle").textContent = model.title || "Diagrama";
+  renderStats(model);
   $("diagram").innerHTML = svg;
   $("diagram").dataset.ready = "1";
   paused = false;
@@ -229,6 +249,7 @@ $("btnDraw").addEventListener("click", () => {
     return;
   }
   draw(model);
+  setStep(3);
   setStatus(`Diagrama con ${model.steps.length} pasos.`);
 });
 
@@ -290,3 +311,9 @@ const SAMPLE = {
     { id: "s7", type: "end", label: "Fin", actor: "almacen" },
   ],
 };
+
+// Arranque: muestra el ejemplo para que la vista no esté vacía
+$("jsonInput").value = JSON.stringify(SAMPLE, null, 2);
+draw(SAMPLE);
+setStep(2);
+setStatus("Ejemplo cargado. Sube un PDF para empezar con tu proceso.");
